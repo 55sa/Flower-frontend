@@ -83,7 +83,7 @@ input[type=submit]:hover {
   left: 50%;
   transform: translate(-50%);
   border: 2px solid #ddd;
-  height: 175px;
+   height: 175px;
 }
 
 /* text inside the vertical line */

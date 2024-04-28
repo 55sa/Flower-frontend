@@ -10,7 +10,7 @@ async function login() {
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify(customer)
+         body: JSON.stringify(customer)
       };
       try {
         let response = await fetch("http://localhost:1095" + "/signin", request);

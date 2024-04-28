@@ -9,7 +9,7 @@ ul.topnav {
   
   ul.topnav li {float: left;}
   
-  ul.topnav li a {
+   ul.topnav li a {
     display: block;
     color: white;
     text-align: center;
