@@ -155,7 +155,7 @@ if (color) queryParams.append('colors', color);
 if (price) queryParams.append('price', price);
 console.log(queryParams.toString());
 
-const url = `http://localhost:1095/search?${queryParams.toString()}`;
+const url = `https://final-4oj9.onrender.com/search?${queryParams.toString()}`;
         const response = await fetch(url, {
             method: 'GET', 
             headers: {

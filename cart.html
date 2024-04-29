@@ -166,7 +166,7 @@
             const orderId = localStorage.getItem('orderId');
             const token = localStorage.getItem('token');
 
-            fetch('http://localhost:1095/address', {
+            fetch('https://final-4oj9.onrender.com/address', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -182,7 +182,7 @@
             })
             .then(data => {
                 if(data) {
-                    return fetch(`http://localhost:1095/rect?name=${encodeURIComponent(name)}&id=${orderId}`, {
+                    return fetch(`https://final-4oj9.onrender.com/rect?name=${encodeURIComponent(name)}&id=${orderId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

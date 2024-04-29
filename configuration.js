@@ -1,6 +1,6 @@
 const mode = 0;
 
-const host_local = "http://localhost:1095";
+const host_local = "https://final-4oj9.onrender.com";
 const host_remote = "";
 
 function getHost() {

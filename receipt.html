@@ -84,7 +84,7 @@
 
         
         async function fetchReceipt(username) {
-            const response = await fetch(`http://localhost:1095/rect?name=${encodeURIComponent(username)}`, {
+            const response = await fetch(`https://final-4oj9.onrender.com/rect?name=${encodeURIComponent(username)}`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
