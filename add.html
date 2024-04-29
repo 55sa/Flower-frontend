@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flower Shop - Add to Cart</title>
+    <link rel="stylesheet" href="style.css"> <!-- Assume external CSS is provided for simplicity -->
+    <style>
+        /* Additional Styles */
+        .content {
+            display: flex;
+            justify-content: center;
+            margin-top: 50px;
+        }
+        .flower-image {
+            max-width: 50%;
+        }
+        .flower-details {
+            max-width: 50%;
+            padding-left: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        .date-picker {
+            margin-bottom: 20px;
+        }
+        .pricing-options {
+            margin-bottom: 20px;
+        }
+        .submit-btn {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+        
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <button class="btn" onclick="location.href='index.html'">Home</button>
+        <button class="btn" onclick="location.href='login.html'">Login</button>
+        <button class="btn" >Cart (<span id="cart-count">0</span>)</button>
+        <button class="btn" onclick="location.href='orders.html'">Track Orders</button>
+        <button class="btn">Help</button>
+    </header>
+
+    <!-- Main Content -->
+    
+        <section id="flower-details">
+            <!-- Flower details will be inserted here -->
+        </section>
+    
+        <section id="order-form">
+            <label for="delivery-date">Delivery Date:</label>
+            <input type="date" id="delivery-date" required>
+    
+            <p>Purchase Options:</p>
+            <label>
+                <input type="radio" name="purchase-option" value="one-time" checked>
+                One time purchase(25$ develiever fee)
+            </label>
+            <label>
+                <input type="radio" name="purchase-option" value="subscription">
+                Subscription 
+            </label>
+    
+            <button id="add-to-basket">Add to Basket</button>
+        </section>
+    
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                displaySelectedFlower();
+            });
+    
+            function displaySelectedFlower() {
+                const flowerName = localStorage.getItem('selectedFlower');
+                const flowerUrl = localStorage.getItem('url');
+                const flowerPrice = localStorage.getItem('price');
+    
+                const flowerDetailsSection = document.getElementById('flower-details');
+                flowerDetailsSection.innerHTML = `
+                    <h2>${flowerName}</h2>
+                    <img src="${flowerUrl}" alt="${flowerName}" width="500" height="300">
+                    <p>Price: $${flowerPrice}</p>
+                `;
+            }
+    
+            document.getElementById('add-to-basket').addEventListener('click', async function() {
+                const flowerName = localStorage.getItem('selectedFlower');
+                const flowerPrice = localStorage.getItem('price');
+                const deliveryDate = document.getElementById('delivery-date').value;
+                const purchaseOption = document.querySelector('input[name="purchase-option"]:checked').value;
+                const finalPrice = purchaseOption === 'subscription' ?  parseFloat(flowerPrice) : (parseFloat(flowerPrice) +25);
+                localStorage.setItem('price',finalPrice);
+                const username=localStorage.getItem('username');
+    
+                const orderDetails = {
+                    name: flowerName,
+                    price: finalPrice,
+                    time: deliveryDate,
+                    
+                };
+    
+                try {
+                    const response = await fetch(`http://localhost:1095/orders?name=${encodeURIComponent(username)}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        },
+                        body: JSON.stringify(orderDetails)
+                    });
+    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+    
+                    const responseData = await response.json();
+                    localStorage.setItem('orderId', responseData);
+                    window.location.href = 'cart.html'; 
+                    
+                } catch (error) {
+                    console.error('A problem occurred with your fetch operation:', error);
+                    alert('Failed to add the flower to the basket. Please try again.');
+                }
+            });
+        </script>
+    </body>
+</html>

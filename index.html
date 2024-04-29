@@ -86,8 +86,9 @@
 <body>
     <!-- Header -->
     <header>
+        <button class="btn" onclick="location.href='index.html'">Home</button>
         <button class="btn" onclick="location.href='login.html'">Login</button>
-        <button class="btn" onclick="location.href='cart.html'">Cart (<span id="cart-count">0</span>)</button>
+        <button class="btn" >Cart (<span id="cart-count">0</span>)</button>
         <button class="btn" onclick="location.href='orders.html'">Track Orders</button>
         <button class="btn">Help</button>
     </header>
@@ -183,15 +184,18 @@ function displayFlowers(flowers) {
         flowerDiv.innerHTML = `
             <img src="${flower.url}" alt="${flower.name}" style="width:100%">
             <p>${flower.name}</p>
-            <p>${flower.price}</p>
-            <button class="btn" onclick="selectFlower('${flower.name}')">Select</button>
+            <p>${flower.price}$</p>
+            <button class="btn" onclick="selectFlower('${flower.name}', '${flower.url}', ${flower.price})">Select</button>
         `; 
         productsContainer.appendChild(flowerDiv); 
     });
 }
 
-function selectFlower(flowerName) {
-    localStorage.setItem('selectedFlower', flowerName); 
+function selectFlower(name, url, price) {
+    localStorage.setItem('selectedFlower', name);
+    localStorage.setItem('url', url);
+    localStorage.setItem('price', price.toString());
+    
     window.location.href = 'add.html'; 
 }
     </script>

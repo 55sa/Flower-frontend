@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Orders</title>
+    <link rel="stylesheet" href="style.css"> <!-- Assume external CSS is provided for simplicity -->
+    <style>
+        /* Additional Styles */
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 50px;
+        }
+        .order-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f4f4f4;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            width: 80%;
+        }
+        .order-item img {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+        }
+        .order-details {
+            margin-top: 10px;
+        }
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <button class="btn" onclick="location.href='index.html'">Home</button>
+    </header>
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Order details will be inserted here -->
+    </div>
+      
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            loadOrders();
+        });
+
+        async function loadOrders() {
+            const username = localStorage.getItem('username');
+            const token = localStorage.getItem('token');
+
+            try {
+                const response = await fetch(`http://localhost:1095/rectall?name=${encodeURIComponent(username)}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) throw new Error('Failed to fetch orders');
+
+                const receipts = await response.json();
+                displayOrders(receipts);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to load orders. Please try again later.');
+            }
+        }
+
+        function displayOrders(receipts) {
+            const contentDiv = document.querySelector('.content');
+            receipts.forEach(receipt => {
+                const orderDiv = document.createElement('div');
+                orderDiv.className = 'order-item';
+                orderDiv.innerHTML = `
+                    
+                    <div class="order-details">
+                        <p>Flower: ${receipt.name}</p>
+                        <p>Address: ${receipt.address}</p>
+                        <p>Deliver Time: ${receipt.time}</p>
+                        <p>Price: $${receipt.price}</p>
+                    </div>
+                `;
+                contentDiv.appendChild(orderDiv);
+            });
+        }
+    </script>
+</body>
+</html>
